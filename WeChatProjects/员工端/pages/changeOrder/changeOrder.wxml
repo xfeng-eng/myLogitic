@@ -1,0 +1,7 @@
+<!--pages/changeOrder/changeOrder.wxml-->
+<view class="container">
+  <input name="oId" id="oId" placeholder="请输入订单号" class="idInput" bindchange="oIdChange" value="{{oId}}"/>
+  <button class="findByoId" bindtap="searchOrder">手动查询</button>
+  <button class="QRScan" bindtap="scanAndSearch">扫码查询</button> 
+  
+</view>

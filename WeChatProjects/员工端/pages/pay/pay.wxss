@@ -1,0 +1,14 @@
+/* pages/pay/pay.wxss */
+.title{
+  margin-top: -150rpx;
+}
+.payImage{
+  width: 80%;
+  height: width;
+}
+.payButton{
+  margin-top: 100rpx;
+  width: 80%;
+  color: aliceblue;
+  background-color: #439677;
+}

@@ -1,0 +1,21 @@
+/* pages/changeOrder/changeOrder.wxss */
+.idInput{
+  margin-top: -150rpx;
+  width: 80%;
+  padding-left: 10rpx;
+  border: 3rpx solid #439677;
+  border-radius: 10rpx;
+  height: 100rpx;
+}
+.findByoId{
+  margin-top: 50rpx;
+  width: 80%;
+  color: aliceblue;
+  background-color: #439677;
+}
+.QRScan{
+  width: 80%;
+  margin-top: 50rpx;
+  color: aliceblue;
+  background-color: #439677;
+}

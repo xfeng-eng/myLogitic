@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎来到我们的MyLogitics！！</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>
+        <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+        <!--[if lt IE 9]>
+            <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+            <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+		<script type="text/javascript">
+			
+			//获取另一个页面传递过来的值的方法
+			function getQueryString(name) { 
+			    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i'); 
+			    var r = window.location.search.substr(1).match(reg); 
+			    if (r != null) { 
+			        return unescape(r[2]); 
+			    } 
+			    return null; 
+			}
+
+			
+
+			function changeStateAndPay(state,isPay){
+				
+				if(state=="Cancelled"){
+					document.getElementById("state")[0].selected=true;
+				}
+				if(state=="Placed"){
+					document.getElementById("state")[1].selected=true;
+				}
+				if(state=="Picked"){
+					document.getElementById("state")[2].selected=true;
+				}
+				if(state=="Loaded"){
+					document.getElementById("state")[3].selected=true;
+				}
+				if(state=="Delivered"){
+					document.getElementById("state")[4].selected=true;
+				}
+				if(state=="Received"){
+					document.getElementById("state")[5].selected=true;
+				}
+				if(isPay==1){
+					document.getElementById("isPay")[0].selected=true;
+				}
+				if(isPay==0){
+					
+					document.getElementById("isPay")[1].selected=true;
+				}
+				
+			}
+
+			var allAddress = [];
+			//映射
+			var index1s=1;
+			var index2r=1;
+			
+			var addressId=[];
+			var addressName=[];
+			function loadData(allAddress){
+
+				var tokenName=window.sessionStorage.getItem("tokenName");
+				//自动获取页面内容
+				var oId=unescape(getQueryString("oId"));
+				var that=this;
+				
+			           		
+			    $.ajax({
+				    
+		            method:'POST',
+		            dataType: "JSONP",
+		            url:"/order/findOrder?oId="+oId,
+		            contentType: "application/json",
+		             headers: {"tokenName": tokenName},
+		            jsonp:"callback",
+		            jsonpCallback:"findOrder",
+		            success: function (data) {
+			            if (data.code == 200) {
+
+                        layer.msg(data.message,{icon:6,time:2000});
+                        for(var i=0;i<that.addressId.length;i++){
+							if(that.addressId[i]==data.Order.sendAddressId){
+								that.index1s=i;
+							}
+							if(that.addressId[i]==data.Order.receiveAddressId){
+								that.index2r=i;
+							}
+						}
+			            //console.log(addressName[index1s]);
+		                
+		                let htmlSelection='';
+		                htmlSelection+=`
+		                		
+							<div class="layui-form-item">
+		                        <label for="oId" class="layui-form-label">
+		                            <span class="x-red">*</span>运单号</label>
+		                        <div class="layui-input-inline">
+		                            <input type="number" id="oId" name="oId" value="${ data.Order.oId }" readonly="readonly" required="" lay-verify="required" autocomplete="off" class="layui-input" ></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="openId" class="layui-form-label">
+		                            <span class="x-red">*</span>微信编号</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="openId" name="openId" value="${ data.Order.openId }"  required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="sender" class="layui-form-label">
+		                            <span class="x-red">*</span>发货人</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="sender" name="sender" value="${ data.Order.sender }" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="senderAddress" class="layui-form-label">
+		                            <span class="x-red">*</span>发货人地址</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="senderAddress" name="senderAddress"  value="${ data.Order.senderAddress }" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                                        <div class="layui-form-item">
+		                        <label for="senderPhone" class="layui-form-label">
+		                            <span class="x-red">*</span>发货人电话</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="senderPhone" name="senderPhone" value="${ data.Order.senderPhone }"  required="" lay-verify="phone|required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="receiver" class="layui-form-label">
+		                            <span class="x-red">*</span>收货人</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="receiver" name="receiver"  value="${ data.Order.receiver }" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="receiverAddress" class="layui-form-label">
+		                            <span class="x-red">*</span>收货人地址</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="receiverAddress" name="receiverAddress"  value="${ data.Order.receiverAddress }" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="receiverPhone" class="layui-form-label">
+		                            <span class="x-red">*</span>收货人电话</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="receiverPhone" name="receiverPhone"  value="${ data.Order.receiverPhone }" required="" lay-verify="phone|required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="sendAddressId" class="layui-form-label">
+		                            <span class="x-red">*</span>发货地址</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="sendAddressId" readonly="readonly"  name="sendAddressId"  value="${ that.addressName[that.index1s] }" required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="receiveAddressId" class="layui-form-label">
+		                            <span class="x-red">*</span>收货地址</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="receiveAddressId" readonly="readonly"  name="receiveAddressId" value="${ that.addressName[that.index2r] }"  required="" lay-verify="required" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="transport" class="layui-form-label">
+		                            运输方式</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="transport" name="transport" value="${ data.Order.transport }"  required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="goodsWeight" class="layui-form-label">
+		                            货物重量</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="goodsWeight" name="goodsWeight"  value="${ data.Order.goodsWeight }" required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="goodsVolume" class="layui-form-label">
+		                            货物体积</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="goodsVolume" name="goodsVolume" value="${ data.Order.goodsVolume }"  required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="goodsNum" class="layui-form-label">
+		                            货物数量</label>
+		                        <div class="layui-input-inline">
+		                            <input type="number" id="goodsNum" name="goodsNum" value="${ data.Order.goodsNum }"  required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="insurance" class="layui-form-label">
+		                            保险金额</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="insurance" name="insurance"  value="${ data.Order.insurance }" required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="price" class="layui-form-label">
+		                            运单总价格</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="price" name="price" value="${ data.Order.price }"  required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="placedTime" class="layui-form-label">
+		                            下单时间</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="placedTime" name="placedTime" readonly="readonly"   value="${ data.Order.placedTime }"  required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="pickedTime" class="layui-form-label">
+		                            提货时间</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="pickedTime" name="pickedTime" readonly="readonly"   value="${ data.Order.pickedTime }"  required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="receivedTime" class="layui-form-label">
+		                            完成时间</label>
+		                        <div class="layui-input-inline">
+		                            <input type="text" id="receivedTime" name="receivedTime" readonly="readonly"    value="${ data.Order.receivedTime }"  required="" lay-verify="" autocomplete="off" class="layui-input"></div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="isPay" class="layui-form-label">
+		                            <span class="x-red">*</span>支付方式</label>
+		                        <div class="layui-input-inline">
+		                            <select id="isPay" name="isPay" >
+		                                <option value="1">立即支付</option>
+		                                <option value="0">货到付款</option>
+		                            </select>
+		                        </div>
+		                    </div>
+		                    <div class="layui-form-item">
+		                        <label for="state" class="layui-form-label">
+		                            <span class="x-red">*</span>运单状态</label>
+		                        <div class="layui-input-inline">
+		                            <select name="state" id="state" >
+		                                <option value="Cancelled">已取消</option>
+		                                <option value="Placed">已下单</option>
+		                                <option value="Picked">已提货</option>
+		                                <option value="Loaded">已装车</option>
+		                                <option value="Delivered">已送达</option>
+		                                <option value="Received">已收货</option>
+		                            </select>
+		                        </div>
+		                    </div>
+					        <div class="layui-form-item">
+					            <label for="L_repass" class="layui-form-label"></label>
+					            <button class="layui-btn" lay-filter="editOrder" lay-submit="">修改</button>
+					        </div>
+			        	`;
+						
+						$('.layui-form').html(htmlSelection);
+						changeStateAndPay(data.Order.state,data.Order.isPay);
+
+						//使用时间模块
+			        	layui.use(['form'], function(){
+						var form =layui.form;
+						form.render();
+				        });
+                        
+                    }else if(data.code == 403){
+                         layer.msg(data.message,{icon:5,time:2000});
+                    }
+						
+						
+						
+						
+
+		            }
+            	});
+
+            	
+			}
+			
+			//自动执行，获得地址表，实现映射
+			window.onload=function(){
+				var that=this;
+				$.ajax({
+					method:'GET',
+					dataType: "JSONP",
+					url:"/address/findAddressList",
+					contentType: "application/json",
+					jsonp:"callback",
+		            jsonpCallback:"findAddressList",
+		        
+					success:function(data){
+						if (data.code == 200) {
+						that.allAddress=data.allAddress;
+						for(var i=0;i<that.allAddress.length;i++){
+							that.addressId[i]=that.allAddress[i].addressId;
+							that.addressName[i]=that.allAddress[i].name;
+							
+						}
+						loadData(data.allAddress);
+                        layer.msg(data.message,{icon:6,time:2000});
+                        
+                    }else if(data.code == 403){
+                         layer.msg(data.message,{icon:5,time:2000});
+                    }
+						
+						
+					}
+					
+				});	
+			}
+
+
+
+
+			layui.use(['form', 'layer'],function() {
+				var that=window;
+                $ = layui.jquery;
+                var form = layui.form;
+                layer = layui.layer;
+                //自定义验证规则
+                form.verify({
+	                
+	                nikename: function(value) {
+                        if (value.length < 5) {
+                            return '昵称至少得5个字符啊';
+                        }
+                    },
+                    pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                    repass: function(value) {
+                        if ($('#L_pass').val() != $('#L_repass').val()) {
+                            return '两次密码不一致';
+                        }
+                    }
+                });
+				
+                //监听提交表单                   编辑运单
+                form.on('submit(editOrder)',function(data) {
+	                var tokenName=window.sessionStorage.getItem("tokenName");
+	                //console.log(JSON.stringify(data.field));
+	                //console.log(that);
+	                //console.log(data.field.sendAddressId);
+	                console.log(JSON.stringify(data.field));
+	                //console.log(data.field.sendAddressId);
+	                data.field.sendAddressId = JSON.stringify(that.addressId[that.index1s]);
+	                data.field.receiveAddressId =JSON.stringify( that.addressId[that.index2r]);
+					//console.log(data.field.sendAddressId);
+					
+					 
+          			$.ajax({
+	          			method:'POST',
+	          			url:"/order/editOrder",
+	          			data:JSON.stringify(data.field),
+	          			dataType:'JSON',
+	          			headers: {"tokenName": tokenName},
+	          			contentType: "application/json",
+	          			success:function(data){
+		          			if (data.code == 200) {
+
+                        layer.msg(data.message,{icon:6,time:2000});
+                        
+                    }else if(data.code == 403){
+                         layer.msg(data.message,{icon:5,time:2000});
+                    }
+	          			}
+          			})
+                });
+            });
+
+
+
+            var _hmt = _hmt || []; (function() {
+                var hm = document.createElement("script");
+                hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+    </script>			
+    </head>
+    	
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form" action="">
+
+			    </form>
+			</div>
+        </div>
+    </body>
+
+</html>

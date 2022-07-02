@@ -1,0 +1,31 @@
+{
+  "pages":[
+    "pages/changeOrder/changeOrder",
+    "pages/user/user",
+    "pages/orderDetail/orderDetail",
+    "pages/pay/pay"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "MyLogitics",
+    "navigationBarTextStyle":"black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "list": [
+      {
+        "text": "运单查询",
+        "iconPath": "images/changeOrder.png",
+        "selectedIconPath": "images/selectedChangeOrder.png",
+        "pagePath": "pages/changeOrder/changeOrder"
+      },
+      {
+        "text": "我",
+        "iconPath": "images/user.png",
+        "selectedIconPath": "images/selectedUser.png",
+        "pagePath": "pages/user/user"
+      }
+    ]
+  }
+}

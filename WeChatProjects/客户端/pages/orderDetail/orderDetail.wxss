@@ -1,0 +1,51 @@
+/* pages/send/send.wxss */
+.senderForm{
+  margin-top: -100rpx;
+}
+.myContainer{
+  width: 80%;
+  margin: auto;
+}
+.senderForm-input{
+  border: 3rpx solid #439677;
+  border-radius: 10rpx;
+  height: 70rpx;
+  width: 100%;
+  word-break:break-all;
+  padding-top: 5rpx;
+  padding-left: 10rpx;
+}
+.placeholderSet{
+  font-size:30rpx;
+}
+.subForm{
+  margin-top:50rpx;
+}
+.topicFont{
+  color:#439677;
+  font-size: 40rpx;
+}
+.formButton{
+  margin-top: 40rpx;
+  border-radius: 10rpx;
+  background-color: #439677;
+  color: aliceblue;
+  font-size: 35rpx;
+  width: 100%;
+}
+.section{
+  margin-top: 50rpx;
+}
+.formRadio{
+  margin-top: 20rpx;
+  margin-left: 20rpx;
+}
+.errorMsg{
+  width: inherit;
+  margin-top: 30rpx;
+  color: red;
+  text-overflow:ellipsis;
+  word-wrap:break-word;
+  word-break: break-all;
+  height: 100rpx;
+}

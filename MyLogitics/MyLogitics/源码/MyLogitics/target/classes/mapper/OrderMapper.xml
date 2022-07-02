@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.edu.scnu.mapper.OrderMapper">
+
+	<select id="queryOrder" resultType="cn.edu.scnu.entity.Orders"
+	parameterType="string">
+		select *from t_order where order_id=#{orderId}
+	</select>
+	
+<!-- 添加订单，直接添加一个新的订单 -->
+<insert id="addOrder" parameterType="cn.edu.scnu.entity.Orders">
+	insert into Orders(oId,
+						openId, 
+						sender,
+						senderAddress,
+						senderPhone,
+						receiver,
+						receiverAddress,
+						receiverPhone,
+						sendAddressId,
+						receiveAddressId,
+						transport,
+						goodsWeight,
+						goodsVolume,
+						goodsNum,
+						insurance,
+						price,
+						placedTime,
+						pickedTime,
+						receivedTime,
+						isPay,
+						state) 
+				values(#{oId},
+						#{openId}, 
+						#{sender},
+						#{senderAddress},
+						#{senderPhone},
+						#{receiver},
+						#{receiverAddress},
+						#{receiverPhone},
+						#{sendAddressId},
+						#{receiveAddressId},
+						#{transport},
+						#{goodsWeight},
+						#{goodsVolume},
+						#{goodsNum},
+						#{insurance},
+						#{price},
+						#{placedTime},
+						#{pickedTime},
+						#{receivedTime},
+						#{isPay},
+						#{state})
+</insert>
+
+
+<!-- 老板查看所有订单 -->
+<select id="findAllOrder"  resultType="cn.edu.scnu.entity.Orders">
+	select * from orders ;
+</select>
+
+<!-- 根据微信openId显示个人所有订单 -->
+<select id="findOrderByOpenId" parameterType="String" resultType="cn.edu.scnu.entity.Orders">
+	select * from orders where openId=#{openId};
+</select>
+
+
+<!-- 删除订单,根据订单的oId删除订单 -->
+<delete id="delOrder"   parameterType="Integer">
+	delete from orders where oId=#{oId}
+</delete>
+
+<!-- 修改订单的状态 -->
+<update id="updateOrder"   parameterType="cn.edu.scnu.entity.Orders">
+	update orders set 	isPay=#{isPay},state=#{state},pickedTime=#{pickedTime},receivedTime=#{receivedTime}
+	   where oId=#{oId}
+</update>
+
+<!-- 编辑订单 -->
+<update id="editOrder"   parameterType="cn.edu.scnu.entity.Orders">
+	update orders set 	openId=#{openId}, 
+						sender=#{sender},
+						senderAddress=#{senderAddress},
+						senderPhone=#{senderPhone},
+						receiver=#{receiver},
+						receiverAddress=#{receiverAddress},
+						receiverPhone=#{receiverPhone},
+						sendAddressId=#{sendAddressId},
+						receiveAddressId=#{receiveAddressId},
+						transport=#{transport},
+						goodsWeight=#{goodsWeight},
+						goodsVolume=#{goodsVolume},
+						goodsNum=#{goodsNum},
+						insurance=#{insurance},
+						price=#{price},
+						placedTime=#{placedTime},
+						pickedTime=#{pickedTime},
+						receivedTime=#{receivedTime},
+						isPay=#{isPay},
+						state=#{state}
+													where oId=#{oId}
+</update>
+
+<!-- 老板查看所有订单 -->
+<select id="findOrder"  parameterType="Integer" resultType="cn.edu.scnu.entity.Orders">
+	select * from orders  where oId=#{oId}
+</select>
+
+
+<!-- 根据下单时间placedTime，查找当天的所有订单 -->
+<select id="findOrderByPlacedTime"  parameterType="Map" resultType="cn.edu.scnu.entity.Orders">
+	select * from orders  where placedTime   between #{beginTime} and #{endTime}
+</select>
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
+

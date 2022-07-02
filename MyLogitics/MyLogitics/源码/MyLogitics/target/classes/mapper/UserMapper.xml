@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scnu.mapper.UserMapper">
+	<!-- 查找用户信息 -->
+	<select id="searchUser"  parameterType="String" resultType="cn.edu.scnu.entity.User">
+		select * from user where uid=#{userId} 
+	</select>
+	<!-- 检查用户是否已被注册 -->
+	<select id="checkUserName"  parameterType="String" resultType="cn.edu.scnu.entity.User">
+		select * from user where username=#{username} 
+	</select>
+	<!-- 用户登录功能，返回User类对象 -->
+	<select id="login" parameterType="cn.edu.scnu.entity.User" resultType="cn.edu.scnu.entity.User">
+		select * from user where username = #{userName} and password = #{passWord}
+	</select>
+	<!-- 实现注册功能 -->
+	<insert id="register" parameterType="cn.edu.scnu.entity.User">
+		insert into user(uid,username,password,permission,nickname,phone,addressId,email) 
+	      	values(#{uId},#{userName},#{passWord},#{permission},#{userNickName},#{phone},#{addressId},#{email})
+	</insert>		
+	<!-- 修改员工信息 -->
+	<update id="modifyUserInfo"  parameterType="cn.edu.scnu.entity.User"  >
+		update user SET username=#{userName},password=#{passWord},permission=#{permission},
+		nickname=#{userNickName},phone=#{phone},addressId=#{addressId},email =#{email} 
+			WHERE uid = #{uId}
+	</update>
+	<!-- 删除员工信息 -->
+	<delete id="deleteUser"   parameterType="String">
+	delete from user where uid=#{userId}
+	</delete>
+	<!-- 查找所有用户Page -->
+	<select id="findAllUser"   resultType="cn.edu.scnu.entity.User">
+		select * from user limit #{curr},#{limit}; 
+	</select>
+	
+	<!-- 查找所有用户 
+	<select id="findAllUser"   resultType="cn.edu.scnu.entity.User">
+		select * from user ; 
+	</select>
+	-->
+</mapper>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎来到我们的MyLogitics！！</title>
+        
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="./css/font.css">
+        <link rel="stylesheet" href="./css/xadmin.css">
+        <script src="./lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="./js/xadmin.js"></script>     
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    
+    <body>
+        <div class="x-nav">
+            <span class="layui-breadcrumb">
+                <a >翔运公司欢迎您来投递！</a>
+                
+            </span>
+            <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+                <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+            </a>
+        </div>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <form method="post" class="layui-form layui-col-space5">
+                                <div class="layui-input-inline layui-show-xs-block">
+                                    <input class="layui-input" placeholder="开始日" name="beginTimeStr" id="beginTimeStr"></div>
+                                <div class="layui-input-inline layui-show-xs-block">
+                                    <input class="layui-input" placeholder="截止日" name="endTimeStr" id="endTimeStr"></div>
+                                <div class="layui-input-inline layui-show-xs-block">
+                                    <button class="layui-btn" lay-submit="" lay-filter="sreachByDateTime"  type="submit">
+                                        <i class="layui-icon">&#xe615;</i></button>
+                                </div>
+                            </form>
+                            <form ethod="post" class="layui-form layui-col-space5">
+	                            <div class="layui-input-inline">
+			                        <input type="text" placeholder="请输入运单号" name="sreachOId" id="sreachOId" lay-verify="number" autocomplete="off" class="layui-input" >
+		                    	</div>
+		                    	<div class="layui-input-inline layui-show-xs-block">
+                                    <button class="layui-btn" lay-submit="" lay-filter="sreachByOId"  type="submit">
+                                        <i class="layui-icon">&#xe615;</i></button>
+                                </div>
+		                    </form>
+                        </div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table layui-form">
+                                <thead>
+                                    <tr>
+                                        <th>运单编号</th>
+                                        <th>发货人</th>
+                                        <th>收货人</th>
+                                        <th>总金额</th>
+                                        <th>运单状态</th>
+                                        <th>下单时间</th>
+                                        <th>详情</th></tr>
+                                </thead>
+                                <tbody class="OrderListContent">
+
+                                </tbody>
+                            </table>
+                        </div>
+						<!-- 分页page -->
+						<div id="demo7">
+							
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+	   
+			$(function  () {
+
+						//查找PlacedTime时间段
+			            layui.use('form', function(){
+			              var form = layui.form;
+			              //监听提交
+			              form.on('submit(sreachByDateTime)', function(data){
+				              var beginTimeStr = document.getElementById("beginTimeStr").value;
+			           		  var endTimeStr = document.getElementById("endTimeStr").value;
+			           		  
+			           		 var tokenName=window.sessionStorage.getItem("tokenName");
+			           		 
+			           		
+			            $.ajax({
+			                method:'get',
+			                dataType: "JSONP",
+			                url:"/order/findOrderByPlacedTime",
+			                contentType: "application/json",
+			                data:{
+			                    beginTimeStr: JSON.stringify(beginTimeStr),
+			                    endTimeStr: JSON.stringify(endTimeStr)
+			                },
+			                headers: {"tokenName": tokenName},
+			                jsonp:"callback",
+			                jsonpCallback:"orderHandler",
+			                success: function (data) {
+				                if (data.code == 200) {
+
+                        layer.msg(data.message,{icon:6,time:2000});
+                        let htmlSelection='';
+			                    for(var o  in  data.orderList){
+				                    htmlSelection+=`
+											<tr>
+					                            <td>${ data.orderList[o].oId }</td>
+					                            <td>${ data.orderList[o].sender }</td>
+					                            <td>${ data.orderList[o].receiver }</td>
+					                            <td>${ data.orderList[o].price }</td>
+					                            <td>${ data.orderList[o].state }</td>
+					                            <td>${ data.orderList[o].placedTime }</td>
+					                            <td class="td-manage">
+					                                <a title="查看" onclick="editOrder(this)" href="javascript:;">
+					                                    <i class="layui-icon">&#xe63c;</i></a>
+					                            </td>
+					                        </tr>`;
+								}
+								$('.OrderListContent').html(htmlSelection);
+                        
+                    }else if(data.code == 403){
+                         layer.msg(data.message,{icon:5,time:2000});
+                    }
+			                    
+			                }//sucess
+			            });//ajax
+			                return false;
+			              });//form表单
+			            });//layuiUse
+
+			            
+						//根据oId查找单个运单
+						layui.use('form', function(){
+		              	var form = layui.form;
+		              	//监听提交
+		             	form.on('submit(sreachByOId)', function(data){
+			              	var oId = document.getElementById("sreachOId").value;
+			              	var tokenName=window.sessionStorage.getItem("tokenName");
+			             	
+				            $.ajax({
+				                method:'GET',
+					            dataType: "JSONP",
+					            url:"/order/findOrder?oId="+oId,
+					            contentType: "application/json",
+					            jsonp:"callback",
+					            jsonpCallback:"findOrder",
+					            headers: {"tokenName": tokenName},
+					            success: function (data) {
+						            if (data.code == 200) {
+								let htmlSelection='';
+				                    htmlSelection+=`
+				                		
+											<tr>
+					                            <td>${ data.Order.oId }</td>
+					                            <td>${ data.Order.sender }</td>
+					                            <td>${ data.Order.receiver }</td>
+					                            <td>${ data.Order.price }</td>
+					                            <td>${ data.Order.state }</td>
+					                            <td>${ data.Order.placedTime }</td>
+					                            <td class="td-manage">
+					                                <a title="查看" onclick="editOrder(this)" href="javascript:;">
+					                                    <i class="layui-icon">&#xe63c;</i></a>
+					                            </td>
+					                        </tr>
+
+					                        `;
+									
+									$('.OrderListContent').html(htmlSelection);
+                        layer.msg(data.message,{icon:6,time:2000});
+                        
+                    }else if(data.code == 403){
+                         layer.msg(data.message,{icon:5,time:2000});
+                    }
+				                    
+				                }
+				            });
+		                	return false;
+		              	});
+						});
+
+			            
+			        })
+
+
+			//打开编辑页面，通过定位,获得oId的值
+			function editOrder(obj) {
+			var tr = obj.parentNode.parentNode;
+			var oId = tr.cells[0].innerHTML;
+			var w=($(window).width()*0.9);
+			var h=($(window).height() - 50);
+			var index = layer.open({
+                title: '编辑运单',
+		        type: 2,
+		        area: [w+'px', h +'px'],
+		        fix: false, //不固定
+		        maxmin: true,
+		        shadeClose: true,
+		        shade:0.4,
+				content:'order-edit.html?oId='+oId
+            });
+			};
+
+
+
+
+
+
+
+
+
+
+
+
+			
+
+			//使用时间模块
+        	layui.use(['laydate','form'], function(){
+	        var laydate = layui.laydate;
+
+	        
+	        //执行一个laydate实例
+	        laydate.render({
+	          elem: '#beginTimeStr' //指定元素
+	          ,type:'datetime'
+	        });
+
+	        //执行一个laydate实例
+	        laydate.render({
+	          elem: '#endTimeStr' //指定元素
+	          ,type:'datetime'
+	        });
+	        });
+	      
+	</script>
+</html>

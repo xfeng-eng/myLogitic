@@ -1,0 +1,30 @@
+{
+  "pages": [
+    "pages/send/send",
+    "pages/myOrders/myOrders",
+    "pages/orderDetail/orderDetail"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "MyLogitics",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "text": "发货",
+        "iconPath": "images/send.png",
+        "selectedIconPath": "images/selectedSend.png",
+        "pagePath": "pages/send/send"
+      },
+      {
+        "text": "我的运单",
+        "iconPath": "images/myOrders.png",
+        "selectedIconPath": "images/selectedMyOrders.png",
+        "pagePath": "pages/myOrders/myOrders"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,36 @@
+/* pages/user/user.wxss */
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #aaa;
+}
+.userinfo-pic {
+  overflow: hidden;
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border:10rpx solid #439677;
+  border-radius: 50%;
+}
+.login-label{
+  color: black;
+}
+.login-input{
+  border:5rpx solid #439677;
+  padding-left: 10rpx;
+  border-radius: 10rpx;
+}
+.login-form{
+  margin-top: 100rpx;
+}
+.login-submit{
+  margin-top: 40rpx;
+  color: aliceblue;
+  background-color: #439677;
+}
+.myContainer{
+  padding-top: 150rpx;
+  width: 80%;
+  margin: auto;
+}

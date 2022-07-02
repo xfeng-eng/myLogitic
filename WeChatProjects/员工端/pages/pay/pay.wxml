@@ -1,0 +1,6 @@
+<!--pages/pay/pay.wxml-->
+<view class="container">
+  <text class="title">支付{{order.price}}元</text>
+  <image src="../../images/pay.jpg" class="payImage"/>
+  <button bindtap="pay" class="payButton">确认支付</button>
+</view>

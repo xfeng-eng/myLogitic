@@ -1,0 +1,107 @@
+<!--pages/orderDetail/orderDetail.wxml-->
+<!--pages/send/send.wxml-->
+<view class="myContainer">
+  <form bindsubmit="formSubmit" class="senderForm">
+    <h1 class="topicFont">发货单据</h1>
+    <view class="subForm">
+      <label>运单号</label>
+      <input type="text" class="senderForm-input" value="{{order.oId}}" disabled="true"/>
+    </view>
+    <view class="subForm">
+      <label>微信编号</label>
+      <input type="text" class="senderForm-input" value="{{order.openId}}" disabled="true"/>
+    </view>
+    <view class="subForm">
+      <label>发货人：</label>
+      <input type="text" class="senderForm-input" value="{{order.sender}}" disabled="true"/>
+    </view>
+    <view class="subForm">
+      <label>发货人地址：</label>
+      <input class="senderForm-input" name="senderAddress" value="{{order.senderAddress}}" disabled="true"/>
+    </view>
+    <view class="subForm">
+      <label>联系电话：</label>
+      <input type="" class="senderForm-input" name="senderPhone" value="{{order.senderPhone}}" disabled="true"/>
+    </view>
+    <view class="subForm">
+      <label>收货人：</label>
+      <input class="senderForm-input" name="receiver" value="{{order.receiver}}" disabled="true"/>
+    </view>
+    <view class="subForm">
+      <label>收货人地址：</label>
+      <input class="senderForm-input" name="receiverAddress" value="{{order.receiverAddress}}" disabled="true"/>
+    </view>
+    <view class="subForm">
+      <label>收货人联系电话：</label>
+      <input class="senderForm-input" name="receiverPhone" value="{{order.receiverPhone}}" disabled="true"/>
+    </view>
+    <view class="section">
+      <label>
+      发货地:
+    </label>
+      <picker bindchange="bindPickerChange1" value="{{index1}}" range="{{addressArray}}" disabled="true">
+        <input class="picker senderForm-input" disabled="true" value="{{addressArray[index1]}}"/>
+      </picker>
+    </view>
+    <view class="section">
+      <label>
+        收货地:
+      </label>
+      <picker bindchange="bindPickerChange2" value="{{index2}}" range="{{addressArray}}" disabled="true">
+        <input class="picker senderForm-input" disabled="true" value="{{addressArray[index2]}}"/>
+      </picker>
+    </view>
+    <view class="subForm">
+      <label>运输方式：</label>
+      <input class="senderForm-input" value="{{order.transport}}" disabled="true"/>
+    </view>
+    <view wx:if="{{order.state!='Cancelled' && order.state!='cancelled'}}">
+      <view class="subForm">
+        <label>重量(公斤):</label>
+        <input type="digit" class="senderForm-input" value="{{order.goodsWeight}}" bindchange="changeWeight"/>
+      </view>
+      <view class="subForm">
+        <label>体积(方):</label>
+        <input type="digit" class="senderForm-input" value="{{order.goodsVolume}}" bindchange="changeVolume"/>
+      </view>
+      <view class="subForm">
+        <label>件数:</label>
+        <input type="number" class="senderForm-input" value="{{order.goodsNum}}" bindchange="changeNum"/>
+      </view>
+      <view class="subForm">
+      <label>运费</label>
+      <input type="digit" class="senderForm-input" name="insurance" value="{{order.price}}" bindchange="changePrice"/>
+    </view>
+    </view>
+    <view wx:elif="{{order.state=='Cancelled' || order.state=='cancelled'}}">
+      <view class="subForm">
+        <label>重量(公斤):</label>
+        <input type="digit" class="senderForm-input" value="{{order.goodsWeight}}"  disabled="true"/>
+      </view>
+      <view class="subForm">
+        <label>体积(方):</label>
+        <input type="digit" class="senderForm-input" value="{{order.goodsVolume}}" disabled="true"/>
+      </view>
+      <view class="subForm">
+        <label>件数:</label>
+        <input type="number" class="senderForm-input" value="{{order.goodsNum}}" disabled="true"/>
+      </view>
+      <view class="subForm">
+      <label>运费</label>
+      <input type="digit" class="senderForm-input" name="insurance" value="{{order.price}}" disabled="true"/>
+    </view>
+    </view>
+    <view class="subForm">
+      <label>保费：</label>
+      <input class="senderForm-input" name="insurance" value="{{order.insurance}}" disabled="true"/>
+    </view>
+    <view class="subForm">
+      <label>当前状态</label>
+      <input class="senderForm-input" name="insurance" value="{{orm[order.state]}}" disabled="true"/>
+    </view>
+    <button wx:if="{{order.state=='Placed'}}" class="formButton" bindtap="changeState">确认收货</button>
+    <button wx:elif="{{order.state=='Picked'}}" class="formButton" bindtap="changeState">确认装车</button>
+    <button wx:elif="{{order.state=='Loaded'}}" class="formButton" bindtap="changeState">确认送达</button>
+    <button wx:elif="{{order.state=='Delivered'}}" class="formButton" bindtap="changeState">确认提货</button>
+  </form>
+</view>

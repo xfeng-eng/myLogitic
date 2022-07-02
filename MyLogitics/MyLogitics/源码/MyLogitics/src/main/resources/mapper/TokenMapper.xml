@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scnu.mapper.TokenMapper">
+
+	<!--  -->
+	<select id="findByTokenName"  parameterType="Map" resultType="cn.edu.scnu.entity.Token">
+		select * from token where tokenName=#{tokenName} and loginName=#{loginName}
+	</select>
+	<insert id="insertToken"  parameterType="Map" >
+		insert into token(tokenName,loginName)  values (#{tokenName},#{loginName})
+	</insert>
+	
+
+
+</mapper>

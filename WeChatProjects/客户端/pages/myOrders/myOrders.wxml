@@ -1,0 +1,27 @@
+<button bindtap="getOrders" class="refreshButton">刷新</button>
+<scroll-view class="hot-box">
+      <!-- <view  class="orderList" wx:for="{{orders}}" wx:key="oId" data-order="{{item}}" bindtap="toggleDialog"> -->
+      <view  class="orderList" wx:for="{{orders}}" wx:key="oId" data-order="{{item}}" bindtap="toDetailPage">
+        <view class="orderListTitle">
+          <text class="orderId">运单号：{{item.oId}}</text>
+          <text class="orderStatus">货物状态:{{orm[item.state]}}</text>
+        </view>
+        <view class="orderListDetails">
+          <view class="orderStateImg">
+            <image src="../../images/status/{{item.state}}.png" background-size="cover"></image>
+          </view>
+          <view class="orderInfo">
+            <view class="orderTitle">下单时间:</view>
+            <view> {{item.placedTime}}</view>
+            <view class="orderTitle">确认下单：</view>
+            <view>{{item.pickedTime}}</view>
+          </view>
+        </view>
+        <view class="productPayState">
+          <view>支付状态
+            <text wx:if="{{item.isPay==true}}" style="color:green;">已支付</text>
+            <text wx:elif="{{item.isPay==false}}" style="color:red;">未支付</text>
+          </view>
+        </view>
+      </view>
+</scroll-view>

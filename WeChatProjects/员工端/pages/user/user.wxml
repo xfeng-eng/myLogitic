@@ -1,0 +1,18 @@
+<!--pages/user/user.wxml-->
+<view class="myContainer">
+  <view class="userinfo" wx:if="{{isLogin==false}}">
+    <image class="userinfo-pic" src="../../images/notLogged.png"  mode="cover"></image>
+    <text class="userinfo-nickname">未登录</text>
+    <form bindsubmit="login" class="login-form"> 
+      <label class="login-label">用户名</label><input name="userName" class="login-input"/>
+      <label class="login-label">密码</label><input type="password" name="passWord" class="login-input"/>
+      <button form-type="submit" class="login-submit">登录</button>
+    </form>
+  </view>
+  <view class="userinfo" wx:elif="{{isLogin==true}}">
+    <image class="userinfo-pic" src="../../images/logged.png" mode="cover"></image>
+    <text class="userinfo-nickname">{{user.userName}}</text>
+    <button class="login-submit" bindtap="logout">退出登录</button>
+  </view>
+</view>
+

@@ -1,0 +1,69 @@
+<!--pages/send/send.wxml-->
+<view class="myContainer">
+  <form bindsubmit="formSubmit" class="senderForm">
+    <h1 class="topicFont">发货单据</h1>
+    <view class="subForm">
+      <label>发货人：</label>
+      <input type="text" class="senderForm-input" name="sender" placeholder="请输入您的名称或者公司名称" placeholder-class="placeholderSet"/>
+    </view>
+    <view class="subForm">
+      <label>发货人地址：</label>
+      <input class="senderForm-input" name="senderAddress" placeholder="请输入发货人地址" placeholder-class="placeholderSet"/>
+    </view>
+    <view class="subForm">
+      <label>联系电话：</label>
+      <input type="" class="senderForm-input" name="senderPhone" placeholder="请输入联系电话" placeholder-class="placeholderSet" type="number"/>
+    </view>
+    <view class="subForm">
+      <label>收货人：</label>
+      <input class="senderForm-input" name="receiver" placeholder="请输入收货人名称或公司名称" placeholder-class="placeholderSet"/>
+    </view>
+    <view class="subForm">
+      <label>收货人地址：</label>
+      <input class="senderForm-input" name="receiverAddress" placeholder="请输入收货人地址" placeholder-class="placeholderSet"/>
+    </view>
+    <view class="subForm">
+      <label>收货人联系电话：</label>
+      <input class="senderForm-input" name="receiverPhone" placeholder="请输入收货人联系电话" placeholder-class="placeholderSet" type="number"/>
+    </view>
+    <view class="section">
+      <label>
+      发货地
+    </label>
+      <picker bindchange="bindPickerChange1" value="{{index1}}" range="{{addressArray}}">
+        <input class="picker senderForm-input" disabled="true" value="{{addressArray[index1]}}"/>
+      </picker>
+    </view>
+    <view class="section">
+      <label>
+        收货地
+      </label>
+      <picker bindchange="bindPickerChange2" value="{{index2}}" range="{{addressArray}}">
+        <input class="picker senderForm-input" disabled="true" value="{{addressArray[index2]}}"/>
+      </picker>
+    </view>
+    <!-- <view class="subForm">
+      <label>发货地：</label>
+      <input type="number" class="senderForm-input" name="sendAddressId" placeholder="请输入发货地" placeholder-class="placeholderSet"/>
+    </view>
+    <view class="subForm">
+      <label>收货地：</label>
+      <input type="number" class="senderForm-input" name="receiveAddressId" placeholder="请输入收货地" placeholder-class="placeholderSet"/>
+    </view> -->
+    <view class="subForm">
+      <label>运输方式：</label>
+      <radio-group bindchange="transportChange" class="formRadio">
+        <label><radio value="汽运" checked="true"></radio>汽运</label>
+        <label><radio value="空运"></radio>空运</label>
+      </radio-group>
+      <!-- <input class="senderForm-input" name="transport" placeholder="请输入运输方式" placeholder-class="placeholderSet"/> -->
+    </view>
+    <view class="subForm">
+      <label>保费：</label>
+      <input class="senderForm-input" name="insurance" placeholder="请输入保费" placeholder-class="placeholderSet"/>
+    </view>
+    <textarea class="errorMsg" value="{{errorMsg}}" disabled="true"></textarea>
+    <button form-type="submit" class="formButton">确认下单</button>
+    <button form-type="reset" class="formButton">重置单据</button>
+  </form>
+</view>
